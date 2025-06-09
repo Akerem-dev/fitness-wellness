@@ -10,6 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.json({ success: true, message: "API çalışıyor!" });
+});
+
 // Tüm route'ları burada ekle!
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/profile", require("./routes/profileRoutes"));
