@@ -1,0 +1,21 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Eğer body’ye sabit bir arka plan rengi isterseniz, buraya ekleyebilirsiniz.
+   Örneğin, body’nin beyaz gözükmesini engellemek için açık bir ton atayabilirsiniz. */
+/* html, body {
+  background-color: #f0f9f0; 
+} */
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
