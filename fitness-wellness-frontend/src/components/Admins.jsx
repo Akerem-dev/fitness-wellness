@@ -1,4 +1,3 @@
-// src/components/Admins.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -15,7 +14,7 @@ export default function Admins() {
     const fetchAdmins = () => {
         axios.get('/api/admins')
             .then(res => setAdmins(res.data))
-            .catch(err => setError("Failed to load admins."));
+            .catch(() => setError("Failed to load admins."));
     };
 
     const handleSubmit = (e) => {
@@ -27,7 +26,7 @@ export default function Admins() {
                 setEmail('');
                 fetchAdmins();
             })
-            .catch(err => setError("Failed to add admin."));
+            .catch(() => setError("Failed to add admin."));
     };
 
     return (

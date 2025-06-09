@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [userId, setUserId] = useState('');
@@ -14,14 +16,14 @@ export default function Transactions() {
     }, []);
 
     const fetchTransactions = () => {
-        axios.get('/api/transactions')
+        axios.get(`${API}/transactions`)
             .then(res => setTransactions(res.data))
             .catch(err => console.error(err));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/transactions', {
+        axios.post(`${API}/transactions`, {
             user_id: parseInt(userId),
             amount: parseFloat(amount),
             transaction_date: transactionDate,

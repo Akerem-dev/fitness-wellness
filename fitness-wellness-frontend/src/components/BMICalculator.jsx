@@ -1,4 +1,3 @@
-// src/components/BMICalculator.jsx
 import React, { useState } from 'react';
 
 const adviceLists = {

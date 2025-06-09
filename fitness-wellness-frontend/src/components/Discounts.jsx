@@ -96,9 +96,7 @@ export default function PlanBuilder() {
     const [plan, setPlan] = useState([]);
 
     useEffect(() => {
-        // localStorage’dan önceki seçimi al
-        const saved =
-            JSON.parse(localStorage.getItem(`plan_${level}_${goal}`)) || null;
+        const saved = JSON.parse(localStorage.getItem(`plan_${level}_${goal}`)) || null;
         if (saved) {
             setPlan(saved);
         } else {
@@ -109,7 +107,6 @@ export default function PlanBuilder() {
     const handleGenerate = () => {
         const template = templates[level][goal] || [];
         setPlan(template);
-        // localStorage’a kaydet
         localStorage.setItem(`plan_${level}_${goal}`, JSON.stringify(template));
     };
 

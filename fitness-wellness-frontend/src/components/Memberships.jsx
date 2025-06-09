@@ -14,14 +14,14 @@ export default function Memberships() {
     }, []);
 
     const fetchMemberships = () => {
-        axios.get('/api/memberships')
+        axios.get(`${process.env.REACT_APP_API_URL}/api/memberships`)
             .then(res => setMemberships(res.data))
             .catch(err => console.error(err));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/memberships', {
+        axios.post(`${process.env.REACT_APP_API_URL}/api/memberships`, {
             user_id: parseInt(userId),
             start_date: startDate,
             end_date: endDate,
@@ -52,11 +52,41 @@ export default function Memberships() {
             </ul>
             <h3 className="text-2xl font-semibold mb-4 text-gray-700">Add New Membership</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="User ID" type="number" value={userId} onChange={e => setUserId(e.target.value)} required />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="Start Date" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="End Date" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="Status" value={status} onChange={e => setStatus(e.target.value)} required />
-                <button type="submit" className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition">
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                    placeholder="User ID"
+                    type="number"
+                    value={userId}
+                    onChange={e => setUserId(e.target.value)}
+                    required
+                />
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                    placeholder="Start Date"
+                    type="date"
+                    value={startDate}
+                    onChange={e => setStartDate(e.target.value)}
+                    required
+                />
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                    placeholder="End Date"
+                    type="date"
+                    value={endDate}
+                    onChange={e => setEndDate(e.target.value)}
+                    required
+                />
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                    placeholder="Status"
+                    value={status}
+                    onChange={e => setStatus(e.target.value)}
+                    required
+                />
+                <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 transition"
+                >
                     Add
                 </button>
             </form>

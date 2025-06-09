@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-/**
- * Props:
- *   staticList: Ön tanımlı liste için array gönderilebilir.
- *   onBuyClick: Kullanıcı “Buy” butonuna tıkladığında çalışır.
- */
+const API = process.env.REACT_APP_API_URL;
+
 export default function Packages({ staticList, onBuyClick = () => {} }) {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,7 +14,7 @@ export default function Packages({ staticList, onBuyClick = () => {} }) {
             return;
         }
         axios
-            .get("/api/packages")
+            .get(`${API}/packages`)
             .then((res) => {
                 setPackages(res.data || []);
             })
@@ -51,7 +48,6 @@ export default function Packages({ staticList, onBuyClick = () => {} }) {
                                 key={pkg.id}
                                 className="relative bg-gradient-to-br from-white to-green-50 rounded-3xl shadow-xl overflow-hidden w-full max-w-sm flex flex-col items-center transform transition-all duration-500 hover:scale-105 hover:shadow-2xl group"
                             >
-                                {/* Decorative blobs */}
                                 <div className="absolute -top-12 -left-12 w-36 h-36 bg-green-100 rounded-full opacity-20"></div>
                                 <div className="absolute -bottom-12 -right-12 w-36 h-36 bg-green-100 rounded-full opacity-20"></div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function MyBookings({ token, refreshTrigger }) {
+export default function MyBookings({ token, refreshTrigger, bookingCompletedFlag }) {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState("");
@@ -26,13 +26,12 @@ export default function MyBookings({ token, refreshTrigger }) {
         };
         fetchMyBookings();
 
-        // Booking tamamlanınca mesaj göster
-        if (window.bookingCompleted) {
+        if (bookingCompletedFlag) {
             setSuccessMessage("Booking completed!");
             setTimeout(() => setSuccessMessage(""), 3000);
-            window.bookingCompleted = false;
+            // bookingCompletedFlag reset işlemi üst komponentte olmalı
         }
-    }, [token, refreshTrigger]);
+    }, [token, refreshTrigger, bookingCompletedFlag]);
 
     if (!token) {
         return (
@@ -51,6 +50,13 @@ export default function MyBookings({ token, refreshTrigger }) {
         );
     }
 
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "";
+        const [datePart, timePart] = dateStr.split(" ");
+        const time = timePart?.slice(0, 5) || "";
+        return { date: datePart, time };
+    };
+
     return (
         <div className="max-w-3xl mx-auto p-4">
             <h2 className="text-2xl font-semibold text-green-700 mb-4">Your Bookings</h2>
@@ -64,13 +70,7 @@ export default function MyBookings({ token, refreshTrigger }) {
             ) : (
                 <ul className="space-y-4">
                     {bookings.map((b) => {
-                        let date = "";
-                        let time = "";
-                        if (b.booking_date) {
-                            const [d, t] = b.booking_date.split(" ");
-                            date = d;
-                            time = t?.slice(0, 5); // "15:30:00" → "15:30"
-                        }
+                        const { date, time } = formatDate(b.booking_date);
                         return (
                             <li
                                 key={b.id}
@@ -92,8 +92,8 @@ export default function MyBookings({ token, refreshTrigger }) {
                                                 b.status === "pending"
                                                     ? "text-yellow-600"
                                                     : b.status === "confirmed"
-                                                        ? "text-green-700"
-                                                        : "text-red-600"
+                                                    ? "text-green-700"
+                                                    : "text-red-600"
                                             }
                                         >
                                             {b.status}

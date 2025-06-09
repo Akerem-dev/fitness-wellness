@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function Users({ mode, onClose, onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ export default function Users({ mode, onClose, onLogin }) {
     }
     try {
       setIsSubmitting(true);
-      const response = await axios.post("/api/user/register", {
+      const response = await axios.post(`${API}/user/register`, {
         firstName,
         lastName,
         email,
@@ -55,7 +57,7 @@ export default function Users({ mode, onClose, onLogin }) {
     }
     try {
       setIsSubmitting(true);
-      const response = await axios.post("/api/user/login", {
+      const response = await axios.post(`${API}/user/login`, {
         email,
         password,
       });

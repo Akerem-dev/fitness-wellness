@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function Notifications() {
     const [notifications, setNotifications] = useState([]);
     const [userId, setUserId] = useState('');
@@ -12,14 +14,14 @@ export default function Notifications() {
     }, []);
 
     const fetchNotifications = () => {
-        axios.get('/api/notifications')
+        axios.get(`${API}/notifications`)
             .then(res => setNotifications(res.data))
             .catch(err => console.error(err));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/notifications', {
+        axios.post(`${API}/notifications`, {
             user_id: parseInt(userId),
             message,
             read_status: readStatus
@@ -39,9 +41,9 @@ export default function Notifications() {
 
             <ul className="divide-y divide-gray-200 mb-8">
                 {notifications.map(notification => (
-                    <li key={notification.id} className="py-3 flex justify-between items-center">
+                    <li key={notification.id} className="py-3 flex justify-between items-center space-x-4">
                         <span className="text-lg font-medium">User ID: {notification.user_id}</span>
-                        <span className="text-gray-600">Message: {notification.message}</span>
+                        <span className="text-gray-600 flex-1">Message: {notification.message}</span>
                         <span className="text-gray-600">Read: {notification.read_status ? 'Yes' : 'No'}</span>
                     </li>
                 ))}

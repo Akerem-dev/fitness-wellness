@@ -27,12 +27,12 @@ export default function BookingModal({ isOpen, onClose, classInfo, token, onBook
             return;
         }
 
-        // MySQL'in DATETIME formatı için "YYYY-MM-DD HH:mm:ss" stringi lazım!
+        // MySQL DATETIME format: "YYYY-MM-DD HH:mm:ss"
         const booking_date = `${date} ${time}:00`;
 
         const payload = {
-            service_id: classInfo.id,      // (Trainer ya da sınıf ID'si)
-            booking_date,                  // "2025-06-09 14:00:00" gibi
+            service_id: classInfo.id,
+            booking_date,
             status: "pending"
         };
 

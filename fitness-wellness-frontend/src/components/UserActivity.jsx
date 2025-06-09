@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function UserActivity() {
     const [activities, setActivities] = useState([]);
     const [userId, setUserId] = useState('');
@@ -13,14 +15,14 @@ export default function UserActivity() {
     }, []);
 
     const fetchActivities = () => {
-        axios.get('/api/user_activity')
+        axios.get(`${API}/user_activity`)
             .then(res => setActivities(res.data))
             .catch(err => console.error(err));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/user_activity', {
+        axios.post(`${API}/user_activity`, {
             user_id: parseInt(userId),
             activity_type: activityType,
             activity_date: activityDate

@@ -1,4 +1,3 @@
-// src/components/ActiveMembers.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -13,7 +12,7 @@ export default function ActiveMembers({ refreshTrigger }) {
       setError(null);
       try {
         const res = await axios.get("/api/active-members");
-        setMembers(res.data); // res.data dizi olarak dönüyor
+        setMembers(res.data); // res.data dizisi
       } catch (err) {
         console.error("ActiveMembers çekilirken hata:", err);
         setError("Couldn't load active members.");
@@ -23,6 +22,7 @@ export default function ActiveMembers({ refreshTrigger }) {
     };
     fetchActiveMembers();
   }, [refreshTrigger]);
+
   return (
     <section id="activemembers" className="py-20 bg-[#f0f9f0]">
       <div className="max-w-7xl mx-auto px-4 text-center">
@@ -53,9 +53,7 @@ export default function ActiveMembers({ refreshTrigger }) {
                 </div>
                 <h3 className="text-xl font-semibold text-green-800">{m.name}</h3>
                 <p className="text-gray-600 mt-2">{m.membershipType}</p>
-                <p className="text-sm text-gray-500">
-                  Expires: {m.endDate}
-                </p>
+                <p className="text-sm text-gray-500">Expires: {m.endDate}</p>
               </div>
             ))}
           </div>

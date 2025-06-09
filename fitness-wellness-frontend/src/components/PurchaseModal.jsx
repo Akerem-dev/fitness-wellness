@@ -1,6 +1,7 @@
-// src/components/PurchaseModal.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
+const API = process.env.REACT_APP_API_URL;
 
 export default function PurchaseModal({
   isOpen,
@@ -66,7 +67,7 @@ export default function PurchaseModal({
     try {
       setLoading(true);
       const response = await axios.post(
-        "/api/packages/purchase",
+        `${API}/packages/purchase`,
         {
           packageId: packageId,
           membershipType: packageName,

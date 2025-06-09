@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function Payments() {
     const [payments, setPayments] = useState([]);
     const [userId, setUserId] = useState('');
@@ -13,14 +15,14 @@ export default function Payments() {
     }, []);
 
     const fetchPayments = () => {
-        axios.get('/api/payments')
+        axios.get(`${API}/payments`)
             .then(res => setPayments(res.data))
             .catch(err => console.error(err));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('/api/payments', {
+        axios.post(`${API}/payments`, {
             user_id: parseInt(userId),
             amount: parseFloat(amount),
             payment_date: paymentDate,
@@ -51,14 +53,16 @@ export default function Payments() {
             </ul>
             <h3 className="text-2xl font-semibold mb-4 text-gray-700">Add Payment</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
                     placeholder="User ID"
                     type="number"
                     value={userId}
                     onChange={e => setUserId(e.target.value)}
                     required
                 />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
                     placeholder="Amount"
                     type="number"
                     step="0.01"
@@ -66,14 +70,16 @@ export default function Payments() {
                     onChange={e => setAmount(e.target.value)}
                     required
                 />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
                     placeholder="Payment Date"
                     type="date"
                     value={paymentDate}
                     onChange={e => setPaymentDate(e.target.value)}
                     required
                 />
-                <input className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                <input
+                    className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
                     placeholder="Method"
                     value={method}
                     onChange={e => setMethod(e.target.value)}

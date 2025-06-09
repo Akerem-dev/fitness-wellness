@@ -25,7 +25,6 @@ import ModalWrapper from "./components/ModalWrapper";
 import Footer from "./components/Footer";
 
 function App() {
-  // Kullanıcı ve token state'i
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const raw = localStorage.getItem("currentUser");
@@ -36,7 +35,6 @@ function App() {
   });
   const [token, setToken] = useState(() => localStorage.getItem("token") || null);
 
-  // UI ve modal state'leri
   const [modalType, setModalType] = useState(null);
   const [purchaseOpen, setPurchaseOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -50,10 +48,7 @@ function App() {
   const [refreshActive, setRefreshActive] = useState(false);
   const [refreshBookings, setRefreshBookings] = useState(false);
 
-  // Booking başarı mesajı
   const [bookingSuccess, setBookingSuccess] = useState(false);
-
-
 
   useEffect(() => {
     AOS.init({ duration: 600, once: true });
@@ -128,28 +123,32 @@ function App() {
       name: "Basic Fit",
       price: 40,
       duration_days: 30,
-      description: "Access to gym facilities during off-peak hours, locker room included, and free water bottles.",
+      description:
+        "Access to gym facilities during off-peak hours, locker room included, and free water bottles.",
     },
     {
       id: 2,
       name: "Pro Fit",
       price: 60,
       duration_days: 30,
-      description: "Unlimited gym access, 2 personal training sessions, free nutritional guide, and sauna privilege.",
+      description:
+        "Unlimited gym access, 2 personal training sessions, free nutritional guide, and sauna privilege.",
     },
     {
       id: 3,
       name: "Yoga Master",
       price: 50,
       duration_days: 30,
-      description: "Daily yoga and meditation classes, one private yoga session per month, and mindfulness workshop access.",
+      description:
+        "Daily yoga and meditation classes, one private yoga session per month, and mindfulness workshop access.",
     },
     {
       id: 4,
       name: "Cardio King",
       price: 35,
       duration_days: 30,
-      description: "Unlimited cardio classes, heart rate tracking, one cardio fitness assessment, and group run events.",
+      description:
+        "Unlimited cardio classes, heart rate tracking, one cardio fitness assessment, and group run events.",
     },
   ];
 
@@ -163,8 +162,6 @@ function App() {
         onLogout={handleLogout}
       />
 
-
-
       {/* MODAL & MAIN */}
       {modalType && (
         <ModalWrapper onClose={() => setModalType(null)}>
@@ -175,7 +172,11 @@ function App() {
             >
               &times;
             </button>
-            <Users mode={modalType} onClose={() => setModalType(null)} onLogin={handleLogin} />
+            <Users
+              mode={modalType}
+              onClose={() => setModalType(null)}
+              onLogin={handleLogin}
+            />
           </div>
         </ModalWrapper>
       )}
@@ -289,12 +290,22 @@ function App() {
         </section>
 
         {/* SERVICES */}
-        <section id="services" data-aos="fade-up" data-aos-duration="500" data-aos-delay="100">
+        <section
+          id="services"
+          data-aos="fade-up"
+          data-aos-duration="500"
+          data-aos-delay="100"
+        >
           <Services />
         </section>
 
         {/* TOOLS (BMI + PLAN BUILDER) */}
-        <section id="tools" className="py-20 bg-[#f0f9f0]" data-aos="fade-up" data-aos-duration="500">
+        <section
+          id="tools"
+          className="py-20 bg-[#f0f9f0]"
+          data-aos="fade-up"
+          data-aos-duration="500"
+        >
           <div className="max-w-7xl mx-auto px-4">
             <h2 className="text-4xl font-bold text-center text-green-700 mb-12">
               Explore Our Tools
@@ -311,15 +322,27 @@ function App() {
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-green-100 rounded-full opacity-30"></div>
                 <div className="p-10 flex flex-col items-center space-y-6 relative z-10">
                   <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-green-200 to-green-400 mb-2 group-hover:from-green-300 group-hover:to-green-500 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.252 0-2.55.514-3.435 1.340A4.992 4.992 0 006 12.5v2a2.5 2.5 0 005 0v-2c0-.466.157-.905.423-1.270A3.975 3.975 0 0112 8zm-6 8h12m-6 4v-2" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-10 h-10 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 8c-1.252 0-2.55.514-3.435 1.340A4.992 4.992 0 006 12.5v2a2.5 2.5 0 005 0v-2c0-.466.157-.905.423-1.270A3.975 3.975 0 0112 8zm-6 8h12m-6 4v-2"
+                      />
                     </svg>
                   </div>
                   <h3 className="text-2xl font-semibold text-green-800">
                     BMI Calculator
                   </h3>
                   <p className="text-gray-600 text-center px-4">
-                    Calculate your Body Mass Index quickly and easily. Track your progress over time!
+                    Calculate your Body Mass Index quickly and easily. Track your
+                    progress over time!
                   </p>
                   <button
                     onClick={() => setBmiOpen(true)}
@@ -340,7 +363,14 @@ function App() {
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-green-100 rounded-full opacity-30"></div>
                 <div className="p-10 flex flex-col items-center space-y-6 relative z-10">
                   <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-green-200 to-green-400 mb-2 group-hover:from-green-300 group-hover:to-green-500 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-10 h-10 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                   </div>
@@ -348,7 +378,8 @@ function App() {
                     Workout Plan Builder
                   </h3>
                   <p className="text-gray-600 text-center px-4">
-                    Create personalized workout plans tailored to your goals and schedule. Achieve results faster!
+                    Create personalized workout plans tailored to your goals and
+                    schedule. Achieve results faster!
                   </p>
                   <button
                     onClick={() => setPlanOpen(true)}
@@ -363,12 +394,22 @@ function App() {
         </section>
 
         {/* PACKAGES */}
-        <section id="packages" data-aos="fade-up" data-aos-duration="500" data-aos-delay="100">
+        <section
+          id="packages"
+          data-aos="fade-up"
+          data-aos-duration="500"
+          data-aos-delay="100"
+        >
           <Packages staticList={staticPackages} onBuyClick={handleBuyClick} />
         </section>
 
         {/* TRAINERS */}
-        <section id="trainers" data-aos="fade-up" data-aos-duration="500" data-aos-delay="100">
+        <section
+          id="trainers"
+          data-aos="fade-up"
+          data-aos-duration="500"
+          data-aos-delay="100"
+        >
           <Trainers
             token={token}
             onRequestBooking={handleBookClass}
@@ -377,7 +418,12 @@ function App() {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" data-aos="fade-up" data-aos-duration="500" data-aos-delay="100">
+        <section
+          id="contact"
+          data-aos="fade-up"
+          data-aos-duration="500"
+          data-aos-delay="100"
+        >
           <Contact currentUser={currentUser} />
         </section>
 
@@ -419,12 +465,6 @@ function App() {
             </p>
           )}
         </section>
-
-        {/* --- Eğer başka yeni component ekleyeceksen, buraya da ekle --- */}
-        {/* <section>
-          <RecommendedExercises />
-        </section> */}
-
       </main>
 
       {/* FOOTER */}

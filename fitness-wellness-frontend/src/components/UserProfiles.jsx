@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function UserProfiles() {
   const [profiles, setProfiles] = useState([]);
   const [userId, setUserId] = useState('');
@@ -15,14 +17,14 @@ export default function UserProfiles() {
   }, []);
 
   const fetchProfiles = () => {
-    axios.get('/api/user_profiles')
+    axios.get(`${API}/user_profiles`)
       .then(res => setProfiles(res.data))
       .catch(err => console.error(err));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/api/user_profiles', {
+    axios.post(`${API}/user_profiles`, {
       user_id: parseInt(userId),
       age: parseInt(age),
       gender,

@@ -1,6 +1,7 @@
-// src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
+
+const API = process.env.REACT_APP_API_URL;
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
@@ -12,7 +13,7 @@ export default function Reviews({ currentUser }) {
   const listRef = useRef(null);
 
   useEffect(() => {
-    axios.get('/api/feedback')
+    axios.get(`${API}/feedback`)
       .then(res => setReviews(res.data))
       .catch(() => setError('Failed to load reviews.'));
   }, []);
@@ -31,7 +32,7 @@ export default function Reviews({ currentUser }) {
 
     setSubmitting(true);
     try {
-      const res = await axios.post('/api/feedback', {
+      const res = await axios.post(`${API}/feedback`, {
         username: currentUser.fullName,
         rating,
         comment: message
