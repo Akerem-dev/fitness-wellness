@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    rejectUnauthorized: true // SSL ZORUNLU
+    rejectUnauthorized: false // <-- BU KURTARICI AYAR
   }
 });
 
