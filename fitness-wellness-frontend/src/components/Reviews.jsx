@@ -4,13 +4,14 @@ import api from '../api';
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
-  const [message, setMessage] = useState('');
+  const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
+  // Sayfa açılır açılmaz yükle
   useEffect(() => {
     (async () => {
       try {
@@ -30,21 +31,22 @@ export default function Reviews({ currentUser }) {
       setError('You must be logged in to leave a review.');
       return;
     }
-    if (!rating || !message.trim()) {
+    if (!rating || !comment.trim()) {
       setError('Star rating and comment are required.');
       return;
     }
 
     setSubmitting(true);
     try {
+      // backend’deki sütun isimleriyle birebir eşleşen payload:
       const payload = {
-        full_name: currentUser.fullName,
+        username: currentUser.fullName, // backend “username” bekliyor
         rating,
-        message: message.trim(),
+        comment: comment.trim(),       // backend “comment” bekliyor
       };
       const res = await api.post('/feedback', payload);
       setReviews(prev => [res.data, ...prev]);
-      setMessage('');
+      setComment('');
       setRating(0);
       setHover(0);
       listRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -64,16 +66,7 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 
-        00.95.69h4.178c.969 0 1.371 1.24.588 
-        1.81l-3.388 2.462a1 1 0 00-.364 
-        1.118l1.286 3.966c.3.921-.755 
-        1.688-1.538 1.118l-3.388-2.462a1 1 0 
-        00-1.176 0l-3.388 2.462c-.783.57-1.838-
-        .197-1.538-1.118l1.286-3.966a1 
-        1 0 00-.364-1.118L2.047 9.393c-
-        .783-.57-.38-1.81.588-1.81h4.178a1 
-        1 0 00.95-.69l1.286-3.966z" />
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286 3.966c.3.921-.755 1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.966z" />
     </svg>
   );
 
@@ -97,8 +90,8 @@ export default function Reviews({ currentUser }) {
           </div>
           <textarea
             rows={3}
-            value={message}
-            onChange={e => setMessage(e.target.value)}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Write your review..."
           />
@@ -121,19 +114,18 @@ export default function Reviews({ currentUser }) {
         {reviews.map(r => (
           <div key={r.id} className="border-b pb-4">
             <div className="flex items-center mb-1">
-              <span className="font-semibold mr-2">{r.full_name}</span>
+              <span className="font-semibold mr-2">{r.username}</span>
               <span className="flex">
                 {[1, 2, 3, 4, 5].map(i => (
                   <StarIcon
                     key={i}
                     filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
-                      }`}
+                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'}`}
                   />
                 ))}
               </span>
             </div>
-            <p className="text-gray-700 mb-1">{r.message}</p>
+            <p className="text-gray-700 mb-1">{r.comment}</p>
             <p className="text-sm text-gray-500">
               {new Date(r.created_at).toLocaleDateString('en-GB')}
             </p>
