@@ -5,7 +5,7 @@ import "aos/dist/aos.css";
 const trainersData = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Murat Kaya",
     specialty: "Strength Training",
     img: "https://randomuser.me/api/portraits/men/32.jpg",
     education: "B.S. in Exercise Science, University of Fitness",
@@ -24,7 +24,7 @@ const trainersData = [
   },
   {
     id: 2,
-    name: "Jane Smith",
+    name: "Selin Aksoy",
     specialty: "Yoga Instructor",
     img: "https://randomuser.me/api/portraits/women/44.jpg",
     education: "Yoga Science Diploma, Harmony Institute",
@@ -43,7 +43,7 @@ const trainersData = [
   },
   {
     id: 3,
-    name: "Mike Johnson",
+    name: "Emre Yılmaz",
     specialty: "Cardio Specialist",
     img: "https://randomuser.me/api/portraits/men/65.jpg",
     education: "M.S. in Sports Physiology, Heartland University",
@@ -62,7 +62,7 @@ const trainersData = [
   },
   {
     id: 4,
-    name: "Emily Clark",
+    name: "Zeynep Demir",
     specialty: "Nutrition Coach",
     img: "https://randomuser.me/api/portraits/women/68.jpg",
     education: "M.S. in Nutrition, Wellness University",
