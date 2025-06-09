@@ -11,11 +11,11 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // Sayfa açılır açılmaz yükle
+  // İlk yükleme
   useEffect(() => {
     (async () => {
       try {
-        const res = await api.get('/feedback');
+        const res = await api.get('/api/feedback');
         setReviews(res.data || []);
       } catch {
         setError('Failed to load reviews.');
@@ -38,13 +38,12 @@ export default function Reviews({ currentUser }) {
 
     setSubmitting(true);
     try {
-      // backend’deki sütun isimleriyle birebir eşleşen payload:
       const payload = {
-        username: currentUser.fullName, // backend “username” bekliyor
+        username: currentUser.fullName,
         rating,
-        comment: comment.trim(),       // backend “comment” bekliyor
+        comment: comment.trim(),
       };
-      const res = await api.post('/feedback', payload);
+      const res = await api.post('/api/feedback', payload);
       setReviews(prev => [res.data, ...prev]);
       setComment('');
       setRating(0);
@@ -66,7 +65,7 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286 3.966c.3.921-.755 1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.966z" />
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 …" />
     </svg>
   );
 
@@ -93,7 +92,7 @@ export default function Reviews({ currentUser }) {
             value={comment}
             onChange={e => setComment(e.target.value)}
             className="w-full p-2 border rounded"
-            placeholder="Write your review..."
+            placeholder="Write your review…"
           />
           {error && <p className="text-red-500">{error}</p>}
           <button
@@ -120,7 +119,8 @@ export default function Reviews({ currentUser }) {
                   <StarIcon
                     key={i}
                     filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'}`}
+                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
                   />
                 ))}
               </span>
