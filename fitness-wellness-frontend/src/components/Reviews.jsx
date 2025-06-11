@@ -11,7 +11,7 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // 1) Feedback listesini çek
+  // 1) Mevcut yorumları çek
   const fetchReviews = async () => {
     try {
       const { data } = await api.get("/api/feedback");
@@ -26,7 +26,7 @@ export default function Reviews({ currentUser }) {
     fetchReviews();
   }, []);
 
-  // 2) Form gönderme
+  // 2) Yeni yorum gönder
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -40,18 +40,18 @@ export default function Reviews({ currentUser }) {
       return;
     }
 
-    // backend’in feedbacks tablosu: (user_id, message, rating)
+    // Backend controller username, rating, comment bekliyor
     const payload = {
-      user_id: currentUser.id,               // <-- currentUser objenizdeki ID alanını kontrol edin
-      message: comment.trim(),
+      username: currentUser.fullName,
       rating: Number(rating),
+      comment: comment.trim(),
     };
     console.log("Submitting payload:", payload);
 
     setSubmitting(true);
     try {
       const res = await api.post("/api/feedback", payload);
-      // eğer API yeni kaydı dönüyorsa:
+      // Yeni eklenen yorumu başa ekle
       setReviews((prev) => [res.data, ...prev]);
       setComment("");
       setRating(0);
@@ -59,8 +59,8 @@ export default function Reviews({ currentUser }) {
       listRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
       console.error("Submit error:", err.response?.data || err);
-      // backend’in döndürdüğü hata mesajını da gösterebilirsiniz:
-      setError(err.response?.data?.error || "Yorum gönderilemedi.");
+      // Backend’in döndürdüğü message alanını göster
+      setError(err.response?.data?.message || "Yorum gönderilemedi.");
     } finally {
       setSubmitting(false);
     }
@@ -82,8 +82,9 @@ export default function Reviews({ currentUser }) {
                 onMouseEnter={() => setHover(n)}
                 onMouseLeave={() => setHover(0)}
                 onClick={() => setRating(n)}
-                className={`cursor-pointer ${(hover || rating) >= n ? "text-yellow-400" : "text-gray-300"
-                  }`}
+                className={`cursor-pointer ${
+                  (hover || rating) >= n ? "text-yellow-400" : "text-gray-300"
+                }`}
               >
                 ★
               </span>
@@ -120,8 +121,9 @@ export default function Reviews({ currentUser }) {
                 {[1, 2, 3, 4, 5].map((i) => (
                   <span
                     key={i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? "text-yellow-400" : "text-gray-300"
-                      }`}
+                    className={`w-5 h-5 mr-1 ${
+                      r.rating >= i ? "text-yellow-400" : "text-gray-300"
+                    }`}
                   >
                     ★
                   </span>
