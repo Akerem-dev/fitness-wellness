@@ -1,9 +1,9 @@
-// backend_ready/controllers/userController.js
+
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// GET /api/user/
+
 exports.getAllUsers = async (req, res) => {
   try {
     const [rows] = await db.execute("SELECT id, full_name, email FROM users");
@@ -14,28 +14,28 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// POST /api/user/register
+
 exports.signup = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ success: false, message: "Lütfen tüm alanları doldurun." });
     }
-    // Aynı email var mı kontrol
+   
     const [users] = await db.execute("SELECT id FROM users WHERE email = ?", [email]);
     if (users.length > 0) {
       return res.status(409).json({ success: false, message: "Bu e-posta zaten kayıtlı." });
     }
-    // Şifre hashle
+
     const hashed = await bcrypt.hash(password, 10);
-    // Full Name birleştir
+
     const fullName = `${firstName} ${lastName}`;
-    // Yeni kullanıcıyı kaydet
+    
     const [result] = await db.execute(
       "INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)",
       [fullName, email, hashed]
     );
-    // JWT oluştur
+   
     const token = jwt.sign(
       { id: result.insertId, email },
       process.env.JWT_SECRET,
@@ -54,25 +54,25 @@ exports.signup = async (req, res) => {
   }
 };
 
-// POST /api/user/login
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "Email ve şifre girin." });
     }
-    // Email ile kullanıcıyı bul
+    
     const [users] = await db.execute("SELECT * FROM users WHERE email = ?", [email]);
     if (users.length === 0) {
       return res.status(401).json({ success: false, message: "E-posta bulunamadı." });
     }
     const user = users[0];
-    // Şifreyi karşılaştır
+    
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(401).json({ success: false, message: "Yanlış şifre." });
     }
-    // JWT oluştur
+   
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
   }
 };
 
-// GET /api/user/me (auth middleware ile)
+
 exports.getMe = async (req, res) => {
   try {
     const user_id = req.user.id;

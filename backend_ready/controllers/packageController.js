@@ -1,4 +1,4 @@
-// backend_ready/controllers/packageController.js
+
 const db = require("../config/db");
 
 exports.purchase = async (req, res) => {
@@ -10,7 +10,7 @@ exports.purchase = async (req, res) => {
       return res.status(400).json({ success: false, message: "Eksik alanlar." });
     }
 
-    // Bugünün tarihi ve +30 gün sonrası
+ 
     const today = new Date();
     const startDate = today.toISOString().slice(0, 10);
     const durationDays = 30;

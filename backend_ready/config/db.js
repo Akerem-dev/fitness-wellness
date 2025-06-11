@@ -1,4 +1,4 @@
-// backend_ready/config/db.js
+
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    rejectUnauthorized: false // <-- BU KURTARICI AYAR
+    rejectUnauthorized: false 
   }
 });
 

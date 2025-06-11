@@ -1,4 +1,4 @@
-// backend_ready/controllers/feedbackController.js
+
 const db = require("../config/db");
 
 exports.getAll = async (req, res) => {

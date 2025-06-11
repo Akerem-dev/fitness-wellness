@@ -5,14 +5,14 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/authMiddleware");
 
-// POST /api/user/register
+
 router.post("/register", async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: "Tüm alanları doldurun." });
         }
-        // Email kontrolü
+        
         const [users] = await db.execute("SELECT id FROM users WHERE email = ?", [email]);
         if (users.length > 0) {
             return res.status(409).json({ message: "Bu e-posta zaten kullanılıyor." });
@@ -39,7 +39,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-// POST /api/user/login
+
 router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -71,7 +71,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// GET /api/user/me
+
 router.get("/me", authMiddleware, async (req, res) => {
     try {
         const user_id = req.user.id;

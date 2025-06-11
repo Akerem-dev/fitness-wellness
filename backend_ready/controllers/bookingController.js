@@ -1,8 +1,8 @@
-// backend_ready/controllers/bookingController.js
+
 
 const db = require("../config/db");
 
-// POST /api/bookings
+
 exports.createBooking = async (req, res) => {
     try {
         const user_id = req.user.id;  // authMiddleware’den
@@ -34,7 +34,7 @@ exports.createBooking = async (req, res) => {
     }
 };
 
-// GET /api/bookings/me (Kullanıcının kendi rezervasyonları) + Trainer adı ile JOIN!
+
 exports.getMyBookings = async (req, res) => {
     try {
         const user_id = req.user.id;

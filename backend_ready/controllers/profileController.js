@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-// Profilini getir (GET /api/profile/me)
+
 exports.getProfile = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -18,7 +18,7 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-// Profilini oluştur veya güncelle (POST /api/profile/update)
+
 exports.updateProfile = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -27,20 +27,19 @@ exports.updateProfile = async (req, res) => {
             return res.status(400).json({ success: false, message: "Tüm alanlar zorunlu." });
         }
 
-        // Var mı diye bak
         const [rows] = await db.execute(
             "SELECT id FROM user_profiles WHERE user_id = ?",
             [userId]
         );
         if (rows.length > 0) {
-            // Güncelle
+         
             await db.execute(
                 "UPDATE user_profiles SET age = ?, gender = ?, weight = ?, height = ? WHERE user_id = ?",
                 [age, gender, weight, height, userId]
             );
             res.json({ success: true, message: "Profil güncellendi." });
         } else {
-            // Yeni profil oluştur
+          
             await db.execute(
                 "INSERT INTO user_profiles (user_id, age, gender, weight, height) VALUES (?, ?, ?, ?, ?)",
                 [userId, age, gender, weight, height]

@@ -1,4 +1,4 @@
-// backend_ready/controllers/activeMembersController.js
+
 const db = require("../config/db");
 
 exports.list = async (req, res) => {

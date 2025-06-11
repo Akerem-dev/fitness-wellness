@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
   res.json({ success: true, message: "API çalışıyor!" });
 });
 
-// Tüm route'ları burada ekle!
+
 app.use("/api/user", require("./routes/userRoutes"));
 app.use("/api/profile", require("./routes/profileRoutes"));
 app.use("/api/active-members", require("./routes/activeMembersRoutes"));
@@ -23,12 +23,12 @@ app.use("/api/feedback", require("./routes/feedbackRoutes")); // DİKKAT: singul
 app.use("/api/packages", require("./routes/packageRoutes"));
 app.use("/api/payments", require("./routes/paymentRoutes"));
 
-// 404 Handler
+
 app.use((req, res, next) => {
   res.status(404).json({ success: false, message: "Route not found." });
 });
 
-// Global error handler
+
 app.use((err, req, res, next) => {
   console.error("Global error:", err);
   res.status(err.status || 500).json({
