@@ -11,45 +11,53 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // Sayfa açılınca yükle
+  // reviewsları çekmek için fonksiyon
+  const fetchReviews = async () => {
+    try {
+      const res = await api.get("/api/feedback");
+      setReviews(res.data);
+    } catch (err) {
+      console.error(err);
+      setError("Yorumlar yüklenirken bir hata oluştu.");
+    }
+  };
+
+  // sayfa açılınca yorumları yükle
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await api.get("/feedback");
-        setReviews(data);
-      } catch {
-        setError("Failed to load reviews.");
-      }
-    })();
+    fetchReviews();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
     if (!currentUser) {
-      setError("You must be logged in.");
+      setError("Yorum bırakmak için giriş yapmalısınız.");
       return;
     }
     if (!rating || !comment.trim()) {
-      setError("Rating and comment required.");
+      setError("Hem puan hem de yorum gerekiyor.");
       return;
     }
 
     setSubmitting(true);
     try {
-      const payload = {
-        username: currentUser.fullName,
+      // backend tablo yapısına uygun payload
+      await api.post("/api/feedback", {
+        user_id: currentUser.id,
         rating,
-        comment: comment.trim(),
-      };
-      const { data } = await api.post("/feedback", payload);
-      setReviews((r) => [data, ...r]);
+        message: comment.trim(),
+      });
+      // formu temizle ve yeniden çek
       setComment("");
       setRating(0);
       setHover(0);
+      await fetchReviews();
+      // en üstteki yeni yoruma scroll
       listRef.current?.scrollIntoView({ behavior: "smooth" });
-    } catch {
-      setError("Failed to submit review.");
+    } catch (err) {
+      console.error(err);
+      setError("Yorum gönderilemedi.");
     } finally {
       setSubmitting(false);
     }
