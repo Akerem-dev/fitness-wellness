@@ -11,7 +11,6 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // load on mount
   useEffect(() => {
     (async () => {
       try {
@@ -26,6 +25,7 @@ export default function Reviews({ currentUser }) {
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
+
     if (!currentUser) {
       setError('You must be logged in to leave a review.');
       return;
@@ -118,8 +118,7 @@ export default function Reviews({ currentUser }) {
                   <StarIcon
                     key={i}
                     filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
-                      }`}
+                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'}`}
                   />
                 ))}
               </span>
