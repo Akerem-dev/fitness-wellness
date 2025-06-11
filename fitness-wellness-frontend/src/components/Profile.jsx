@@ -1,4 +1,4 @@
-// src/components/Profile.jsx
+
 import React, { useState, useEffect } from 'react';
 
 export default function Profile({ currentUser }) {
@@ -33,7 +33,7 @@ export default function Profile({ currentUser }) {
       });
       setEditing(true);
     }
-    // eslint-disable-next-line
+
   }, [currentUser.id, currentUser.email]);
 
   const handleChange = e => {
@@ -47,7 +47,7 @@ export default function Profile({ currentUser }) {
     setEditing(false);
   };
 
-  // Progress bar: current weight / goal weight * 100
+
   const progress =
     form.weight && form.goal
       ? Math.min(100, (Number(form.weight) / Number(form.goal)) * 100)

@@ -1,4 +1,4 @@
-// src/components/Reviews.jsx
+
 import React, { useEffect, useState, useRef } from "react";
 import api from "../api";
 
@@ -11,7 +11,7 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // 1) Mevcut yorumları çek
+ 
   const fetchReviews = async () => {
     try {
       const { data } = await api.get("/api/feedback");
@@ -26,7 +26,7 @@ export default function Reviews({ currentUser }) {
     fetchReviews();
   }, []);
 
-  // 2) Yeni yorum gönder
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -40,7 +40,7 @@ export default function Reviews({ currentUser }) {
       return;
     }
 
-    // Backend controller username, rating, comment bekliyor
+    
     const payload = {
       username: currentUser.fullName,
       rating: Number(rating),
@@ -51,7 +51,7 @@ export default function Reviews({ currentUser }) {
     setSubmitting(true);
     try {
       const res = await api.post("/api/feedback", payload);
-      // Yeni eklenen yorumu başa ekle
+      
       setReviews((prev) => [res.data, ...prev]);
       setComment("");
       setRating(0);
@@ -59,7 +59,7 @@ export default function Reviews({ currentUser }) {
       listRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
       console.error("Submit error:", err.response?.data || err);
-      // Backend’in döndürdüğü message alanını göster
+      
       setError(err.response?.data?.message || "Yorum gönderilemedi.");
     } finally {
       setSubmitting(false);

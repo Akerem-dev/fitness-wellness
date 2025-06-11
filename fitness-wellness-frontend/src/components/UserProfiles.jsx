@@ -1,4 +1,4 @@
-// src/components/UserProfiles.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -44,13 +44,13 @@ export default function UserProfiles() {
         weight: parseFloat(weight),
         height: parseFloat(height),
       });
-      // clear form
+      
       setUserId('');
       setAge('');
       setGender('');
       setWeight('');
       setHeight('');
-      // refresh list
+      
       fetchProfiles();
     } catch (err) {
       console.error(err);

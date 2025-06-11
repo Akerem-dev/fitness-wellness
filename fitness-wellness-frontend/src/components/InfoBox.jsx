@@ -1,4 +1,4 @@
-// src/components/InfoBox.jsx
+
 import React from 'react';
 
 export default function InfoBox({ title, message, icon }) {

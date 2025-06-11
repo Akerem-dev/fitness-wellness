@@ -4,7 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import BookingModal from "./BookingModal";
 
-// Kategorili hizmet verisi
+
 const servicesData = [
   {
     id: 1,
@@ -46,7 +46,7 @@ export default function Services() {
     AOS.init({ duration: 800, once: true });
   }, []);
 
-  // Kategori filtreleme
+  
   const categories = ["All", ...new Set(servicesData.map((s) => s.category))];
 
   const handleCategoryClick = (cat) => {

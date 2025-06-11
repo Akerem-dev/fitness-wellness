@@ -1,4 +1,4 @@
-// src/components/UserActivity.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -11,7 +11,7 @@ export default function UserActivity() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch list on mount (and after new activity)
+  
   useEffect(() => {
     fetchActivities();
   }, []);
@@ -47,11 +47,11 @@ export default function UserActivity() {
         activity_type: activityType.trim(),
         activity_date: activityDate,
       });
-      // Clear form
+      
       setUserId('');
       setActivityType('');
       setActivityDate('');
-      // Refresh list
+      
       fetchActivities();
     } catch (err) {
       console.error(err);

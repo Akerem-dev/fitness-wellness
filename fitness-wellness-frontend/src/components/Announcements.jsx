@@ -1,4 +1,4 @@
-// src/components/Announcements.jsx
+
 import React from "react";
 
 export default function Announcements({ items = [] }) {

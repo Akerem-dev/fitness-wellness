@@ -1,4 +1,4 @@
-// src/components/TrainerAvailability.jsx
+
 import React, { useState, useEffect } from "react";
 
 export default function TrainerAvailability({ isOpen, onClose, trainer, token, onBook }) {

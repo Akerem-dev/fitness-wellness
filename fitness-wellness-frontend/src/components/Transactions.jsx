@@ -1,4 +1,4 @@
-// src/components/Transactions.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -34,7 +34,6 @@ export default function Transactions() {
     e.preventDefault();
     setError(null);
 
-    // simple validation
     if (!userId || !amount || !transactionDate || !type.trim()) {
       setError('All fields are required.');
       return;
@@ -48,12 +47,12 @@ export default function Transactions() {
         transaction_date: transactionDate,
         type: type.trim(),
       });
-      // reset form
+      
       setUserId('');
       setAmount('');
       setTransactionDate('');
       setType('');
-      // refresh list
+     
       fetchTransactions();
     } catch (err) {
       console.error(err);

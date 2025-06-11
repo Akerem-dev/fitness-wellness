@@ -1,4 +1,4 @@
-// src/App.js
+
 
 import React, { useState, useEffect } from "react";
 import AOS from "aos";
@@ -79,7 +79,7 @@ function App() {
     setAvailOpen(false);
   };
 
-  // Paket satın alma
+  
   const handleBuyClick = (pkg) => {
     setSelectedPackage(pkg);
     setPurchaseOpen(true);
@@ -90,11 +90,11 @@ function App() {
   };
   const handlePurchaseSuccess = () => setRefreshActive((prev) => !prev);
 
-  // Profil modal
+  
   const handleOpenProfile = () => setProfileOpen(true);
   const handleCloseProfile = () => setProfileOpen(false);
 
-  // Rezervasyon modalı ve booking başarı mesajı
+  
   const handleBookClass = (trainer) => {
     setBookingInfo(trainer);
     setBookingOpen(true);
@@ -106,7 +106,7 @@ function App() {
     setTimeout(() => setBookingSuccess(false), 3000);
   };
 
-  // Trainer availability
+  
   const handleViewAvailability = (trainer) => {
     setSelectedTrainerForAvail(trainer);
     setAvailOpen(true);
@@ -116,7 +116,7 @@ function App() {
     setSelectedTrainerForAvail(null);
   };
 
-  // Statik paketler (örnek)
+  
   const staticPackages = [
     {
       id: 1,

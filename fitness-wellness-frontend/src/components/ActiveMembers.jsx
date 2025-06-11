@@ -12,7 +12,7 @@ export default function ActiveMembers({ refreshTrigger }) {
       setError(null);
       try {
         const res = await axios.get("/api/active-members");
-        setMembers(res.data); // res.data dizisi
+        setMembers(res.data); 
       } catch (err) {
         console.error("ActiveMembers çekilirken hata:", err);
         setError("Couldn't load active members.");

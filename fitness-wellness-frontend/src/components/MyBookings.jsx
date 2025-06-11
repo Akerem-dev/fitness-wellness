@@ -29,7 +29,7 @@ export default function MyBookings({ token, refreshTrigger, bookingCompletedFlag
     if (bookingCompletedFlag) {
       setSuccessMessage("Booking completed!");
       setTimeout(() => setSuccessMessage(""), 3000);
-      // bookingCompletedFlag reset işlemi üst komponentte olmalı
+      
     }
   }, [token, refreshTrigger, bookingCompletedFlag]);
 
@@ -50,7 +50,7 @@ export default function MyBookings({ token, refreshTrigger, bookingCompletedFlag
     );
   }
 
-  // Gelen ISO string'ten hem tarih hem saat üretecek fonksiyon
+  
   const formatDateTime = (isoString) => {
     if (!isoString) return { date: "", time: "" };
     const d = new Date(isoString);

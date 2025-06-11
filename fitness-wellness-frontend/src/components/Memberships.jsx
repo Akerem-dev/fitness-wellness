@@ -1,4 +1,4 @@
-// src/components/Memberships.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -35,7 +35,7 @@ export default function Memberships() {
     e.preventDefault();
     setError(null);
 
-    // Basic validation
+    
     if (!userId || !startDate || !endDate || !status.trim()) {
       setError('All fields are required.');
       return;
@@ -49,12 +49,12 @@ export default function Memberships() {
         end_date: endDate,
         status: status.trim(),
       });
-      // Clear form
+      
       setUserId('');
       setStartDate('');
       setEndDate('');
       setStatus('');
-      // Refresh list
+      
       fetchMemberships();
     } catch (err) {
       console.error(err);

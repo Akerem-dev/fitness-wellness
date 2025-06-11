@@ -18,8 +18,8 @@ const trainersData = [
       "USA Weightlifting Level 1",
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/johndoe",
-      instagram: "https://instagram.com/johndoe",
+      linkedin: "https://linkedin.com/in/Muratkaya",
+      instagram: "https://instagram.com/Muratkaya",
     },
   },
   {
@@ -37,8 +37,8 @@ const trainersData = [
       "Certified Prenatal Yoga Instructor",
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/janesmith",
-      instagram: "https://instagram.com/janesmith",
+      linkedin: "https://linkedin.com/in/Selinaksoy",
+      instagram: "https://instagram.com/Selinaksoy",
     },
   },
   {
@@ -56,8 +56,8 @@ const trainersData = [
       "Certified Indoor Cycling Instructor",
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/mikejohnson",
-      instagram: "https://instagram.com/mikejohnson",
+      linkedin: "https://linkedin.com/in/Emreyilmaz",
+      instagram: "https://instagram.com/Emreyilmaz",
     },
   },
   {
@@ -75,8 +75,8 @@ const trainersData = [
       "Precision Nutrition Level 2",
     ],
     socials: {
-      linkedin: "https://linkedin.com/in/emilyclark",
-      instagram: "https://instagram.com/emilyclark",
+      linkedin: "https://linkedin.com/in/Zeynepdemir",
+      instagram: "https://instagram.com/Zeynepdemir",
     },
   },
 ];

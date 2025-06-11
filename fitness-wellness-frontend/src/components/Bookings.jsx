@@ -1,4 +1,4 @@
-// src/components/Bookings.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -47,12 +47,12 @@ export default function Bookings() {
         booking_date: bookingDate,
         status,
       });
-      // Clear form
+      
       setUserId('');
       setServiceId('');
       setBookingDate('');
       setStatus('');
-      // Refresh list
+      
       fetchBookings();
     } catch (err) {
       console.error(err);

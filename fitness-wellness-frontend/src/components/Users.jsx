@@ -1,4 +1,4 @@
-// src/components/Users.jsx
+
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ export default function Users({ mode, onClose, onLogin }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Kayıt
+  
   const handleRegisterSubmit = async () => {
     if (!firstName.trim() || !lastName.trim()) {
       setErrorMessage("Please enter both first name and last name.");
@@ -30,7 +30,7 @@ export default function Users({ mode, onClose, onLogin }) {
     setIsSubmitting(true);
     try {
       const res = await axios.post(
-        // production’da Nginx proxy’siyle /api/user/register’e
+        
         `${API || ""}/api/user/register`, 
         { firstName, lastName, email, password }
       );
@@ -46,7 +46,7 @@ export default function Users({ mode, onClose, onLogin }) {
     }
   };
 
-  // Giriş
+  
   const handleLoginSubmit = async () => {
     if (!email.trim() || !password.trim()) {
       setErrorMessage("Please enter both email and password.");

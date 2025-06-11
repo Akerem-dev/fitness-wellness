@@ -1,4 +1,4 @@
-// src/components/Admins.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 

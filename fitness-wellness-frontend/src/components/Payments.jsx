@@ -1,4 +1,4 @@
-// src/components/Payments.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -34,7 +34,7 @@ export default function Payments() {
     e.preventDefault();
     setError(null);
 
-    // Basic validation
+    
     if (!userId || !amount || !paymentDate || !method.trim()) {
       setError('All fields are required.');
       return;
@@ -48,12 +48,12 @@ export default function Payments() {
         payment_date: paymentDate,
         method: method.trim(),
       });
-      // Reset form
+      
       setUserId('');
       setAmount('');
       setPaymentDate('');
       setMethod('');
-      // Refresh list
+      
       fetchPayments();
     } catch (err) {
       console.error(err);

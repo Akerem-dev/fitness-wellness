@@ -1,4 +1,4 @@
-// src/components/ClassSchedules.jsx
+
 import React, { useEffect, useState } from 'react';
 import api from '../api';
 
@@ -34,7 +34,7 @@ export default function ClassSchedules() {
     e.preventDefault();
     setError(null);
 
-    // Basic validation
+    
     if (!serviceId || !trainerId || !classTime) {
       setError('All fields are required.');
       return;
@@ -47,11 +47,11 @@ export default function ClassSchedules() {
         trainer_id: Number(trainerId),
         class_time: classTime,
       });
-      // Clear form
+      
       setServiceId('');
       setTrainerId('');
       setClassTime('');
-      // Refresh list
+      
       fetchSchedules();
     } catch (err) {
       console.error(err);
