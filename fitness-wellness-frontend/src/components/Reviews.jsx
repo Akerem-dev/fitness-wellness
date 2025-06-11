@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import api from '../api'; // baseURL zaten REACT_APP_API_URL=http://167.71.42.132:5001/api olarak ayarlı
 
+const API = process.env.REACT_APP_API_URL;
+
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState('');
