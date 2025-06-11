@@ -1,8 +1,6 @@
 // src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../api'; // baseURL zaten REACT_APP_API_URL=http://167.71.42.132:5001/api olarak ayarlı
-
-const API = process.env.REACT_APP_API_URL;
+import api from '../api'; // baseURL’in sonuna '/api' ekli olsun.
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
@@ -13,14 +11,12 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // sayfa açılır açılmaz yükle
   useEffect(() => {
     (async () => {
       try {
-        const res = await api.get('/feedback');
-        setReviews(res.data);
-      } catch (err) {
-        console.error(err);
+        const { data } = await api.get('/feedback');
+        setReviews(data);
+      } catch {
         setError('Failed to load reviews.');
       }
     })();
@@ -29,6 +25,7 @@ export default function Reviews({ currentUser }) {
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
+
     if (!currentUser) {
       setError('You must be logged in to leave a review.');
       return;
@@ -43,16 +40,15 @@ export default function Reviews({ currentUser }) {
       const payload = {
         username: currentUser.fullName,
         rating,
-        comment: comment.trim()
+        comment: comment.trim(),
       };
-      const res = await api.post('/feedback', payload);
-      setReviews(prev => [res.data, ...prev]);
+      const { data } = await api.post('/feedback', payload);
+      setReviews(prev => [data, ...prev]);
       setComment('');
       setRating(0);
       setHover(0);
       listRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError('Failed to submit your review.');
     } finally {
       setSubmitting(false);
@@ -68,13 +64,15 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966
-        a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588
-        1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286
-        3.966c.3.921-.755 1.688-1.538
-        1.118l-3.388-2.462a1 1 0 00-1.176
-        0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.966a1
-        1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38-1.81.588-1.81h4.178a1
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 
+        00.95.69h4.178c.969 0 1.371 1.24.588 
+        1.81l-3.388 2.462a1 1 0 00-.364 
+        1.118l1.286 3.966c.3.921-.755 
+        1.688-1.538 1.118l-3.388-2.462a1 1 0 
+        00-1.176 0l-3.388 2.462c-.783.57-1.838-
+        .197-1.538-1.118l1.286-3.966a1 
+        1 0 00-.364-1.118L2.047 9.393c-
+        .783-.57-.38-1.81.588-1.81h4.178a1 
         1 0 00.95-.69l1.286-3.966z" />
     </svg>
   );
@@ -125,6 +123,7 @@ export default function Reviews({ currentUser }) {
         {reviews.map(r => (
           <div key={r.id} className="border-b pb-4">
             <div className="flex items-center mb-1">
+              {/* Burada full_name ve message kullanıyoruz */}
               <span className="font-semibold mr-2">{r.full_name}</span>
               <span className="flex">
                 {[1, 2, 3, 4, 5].map(i => (
