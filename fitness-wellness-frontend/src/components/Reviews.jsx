@@ -1,13 +1,13 @@
 // src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../api';
+import api from '../api'; // baseURL zaten REACT_APP_API_URL=http://167.71.42.132:5001/api olarak ayarlı
 
 export default function Reviews({ currentUser }) {
-  const [reviews, setReviews]     = useState([]);
-  const [comment, setComment]     = useState('');
-  const [rating, setRating]       = useState(0);
-  const [hover, setHover]         = useState(0);
-  const [error, setError]         = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
@@ -17,8 +17,8 @@ export default function Reviews({ currentUser }) {
       try {
         const res = await api.get('/feedback');
         setReviews(res.data);
-      } catch (e) {
-        console.error(e);
+      } catch (err) {
+        console.error(err);
         setError('Failed to load reviews.');
       }
     })();
@@ -27,7 +27,6 @@ export default function Reviews({ currentUser }) {
   const handleSubmit = async e => {
     e.preventDefault();
     setError(null);
-
     if (!currentUser) {
       setError('You must be logged in to leave a review.');
       return;
@@ -50,8 +49,8 @@ export default function Reviews({ currentUser }) {
       setRating(0);
       setHover(0);
       listRef.current?.scrollIntoView({ behavior: 'smooth' });
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
       setError('Failed to submit your review.');
     } finally {
       setSubmitting(false);
@@ -67,14 +66,14 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69
-               h4.178c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364
-               1.118l1.286 3.966c.3.921-.755 1.688-1.538
-               1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388
-               2.462c-.783.57-1.838-.197-1.538-1.118l1.286-
-               3.966a1 1 0 00-.364-1.118L2.047 9.393c-
-               .783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69
-               l1.286-3.966z" />
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966
+        a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588
+        1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286
+        3.966c.3.921-.755 1.688-1.538
+        1.118l-3.388-2.462a1 1 0 00-1.176
+        0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.966a1
+        1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38-1.81.588-1.81h4.178a1
+        1 0 00.95-.69l1.286-3.966z" />
     </svg>
   );
 
@@ -87,13 +86,13 @@ export default function Reviews({ currentUser }) {
       {currentUser ? (
         <form onSubmit={handleSubmit} className="mb-8 space-y-4">
           <div className="flex space-x-1">
-            {[1,2,3,4,5].map(n => (
+            {[1, 2, 3, 4, 5].map(n => (
               <StarIcon
                 key={n}
-                filled={(hover||rating) >= n}
-                onMouseEnter={()=>setHover(n)}
-                onMouseLeave={()=>setHover(0)}
-                onClick={()=>setRating(n)}
+                filled={(hover || rating) >= n}
+                onMouseEnter={() => setHover(n)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => setRating(n)}
                 className="w-6 h-6 cursor-pointer text-yellow-400"
               />
             ))}
@@ -101,7 +100,7 @@ export default function Reviews({ currentUser }) {
           <textarea
             rows={3}
             value={comment}
-            onChange={e=>setComment(e.target.value)}
+            onChange={e => setComment(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Write your review…"
           />
@@ -126,13 +125,12 @@ export default function Reviews({ currentUser }) {
             <div className="flex items-center mb-1">
               <span className="font-semibold mr-2">{r.full_name}</span>
               <span className="flex">
-                {[1,2,3,4,5].map(i => (
+                {[1, 2, 3, 4, 5].map(i => (
                   <StarIcon
                     key={i}
                     filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${
-                      r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
-                    }`}
+                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
                   />
                 ))}
               </span>
