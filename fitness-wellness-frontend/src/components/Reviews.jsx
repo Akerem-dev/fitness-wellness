@@ -1,16 +1,17 @@
 // src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../api'; // baseURL’in sonuna '/api' ekli olsun.
+import api from '../api';         // api.js’te baseURL: "http://167.71.42.132:5001/api"
 
 export default function Reviews({ currentUser }) {
-  const [reviews, setReviews] = useState([]);
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [error, setError] = useState(null);
+  const [reviews, setReviews]       = useState([]);
+  const [comment, setComment]       = useState('');
+  const [rating, setRating]         = useState(0);
+  const [hover, setHover]           = useState(0);
+  const [error, setError]           = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const listRef = useRef(null);
+  const listRef                     = useRef(null);
 
+  // sayfa açılır açılmaz yükle
   useEffect(() => {
     (async () => {
       try {
@@ -24,17 +25,16 @@ export default function Reviews({ currentUser }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setError(null);
-
     if (!currentUser) {
-      setError('You must be logged in to leave a review.');
+      setError('You must be logged in.');
       return;
     }
     if (!rating || !comment.trim()) {
-      setError('Star rating and comment are required.');
+      setError('Rating and comment required.');
       return;
     }
 
+    setError(null);
     setSubmitting(true);
     try {
       const payload = {
@@ -43,29 +43,21 @@ export default function Reviews({ currentUser }) {
         comment: comment.trim(),
       };
       const { data } = await api.post('/feedback', payload);
-      setReviews(prev => [data, ...prev]);
-      setComment('');
-      setRating(0);
-      setHover(0);
+      setReviews(r => [data, ...r]);
+      setComment(''); setRating(0); setHover(0);
       listRef.current?.scrollIntoView({ behavior: 'smooth' });
     } catch {
-      setError('Failed to submit your review.');
+      setError('Failed to submit review.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const StarIcon = ({ filled, ...props }) => (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill={filled ? 'currentColor' : 'none'}
-      stroke="currentColor"
-      strokeWidth={1}
-    >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 
-        00.95.69h4.178c.969 0 1.371 1.24.588 
+  const Star = ({ filled, ...p }) => (
+    <svg {...p} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+         fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={1}>
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 
+        1 0 00.95.69h4.178c.969 0 1.371 1.24.588 
         1.81l-3.388 2.462a1 1 0 00-.364 
         1.118l1.286 3.966c.3.921-.755 
         1.688-1.538 1.118l-3.388-2.462a1 1 0 
@@ -78,7 +70,7 @@ export default function Reviews({ currentUser }) {
   );
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mb-16">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow mb-16">
       <h2 className="text-3xl font-bold text-green-600 text-center mb-4">
         Reviews
       </h2>
@@ -86,30 +78,24 @@ export default function Reviews({ currentUser }) {
       {currentUser ? (
         <form onSubmit={handleSubmit} className="mb-8 space-y-4">
           <div className="flex space-x-1">
-            {[1, 2, 3, 4, 5].map(n => (
-              <StarIcon
-                key={n}
-                filled={(hover || rating) >= n}
-                onMouseEnter={() => setHover(n)}
-                onMouseLeave={() => setHover(0)}
-                onClick={() => setRating(n)}
-                className="w-6 h-6 cursor-pointer text-yellow-400"
-              />
+            {[1,2,3,4,5].map(n => (
+              <Star key={n}
+                    filled={(hover||rating)>=n}
+                    onMouseEnter={()=>setHover(n)}
+                    onMouseLeave={()=>setHover(0)}
+                    onClick={()=>setRating(n)}
+                    className="w-6 h-6 cursor-pointer text-yellow-400" />
             ))}
           </div>
-          <textarea
-            rows={3}
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Write your review…"
-          />
+          <textarea rows={3}
+                    value={comment}
+                    onChange={e=>setComment(e.target.value)}
+                    className="w-full p-2 border rounded"
+                    placeholder="Write your review…" />
           {error && <p className="text-red-500">{error}</p>}
-          <button
-            type="submit"
-            disabled={submitting}
-            className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 disabled:opacity-50"
-          >
+          <button type="submit"
+                  disabled={submitting}
+                  className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 disabled:opacity-50">
             {submitting ? 'Submitting…' : 'Submit'}
           </button>
         </form>
@@ -123,18 +109,16 @@ export default function Reviews({ currentUser }) {
         {reviews.map(r => (
           <div key={r.id} className="border-b pb-4">
             <div className="flex items-center mb-1">
-              {/* Burada full_name ve message kullanıyoruz */}
               <span className="font-semibold mr-2">{r.full_name}</span>
-              <span className="flex">
-                {[1, 2, 3, 4, 5].map(i => (
-                  <StarIcon
-                    key={i}
-                    filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'
-                      }`}
-                  />
+              <div className="flex">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i}
+                        filled={r.rating>=i}
+                        className={`w-5 h-5 mr-1 ${
+                          r.rating>=i ? 'text-yellow-400' : 'text-gray-300'
+                        }`} />
                 ))}
-              </span>
+              </div>
             </div>
             <p className="text-gray-700 mb-1">{r.message}</p>
             <p className="text-sm text-gray-500">
