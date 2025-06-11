@@ -1,6 +1,6 @@
 // src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../api';  // axios.create({ baseURL: process.env.REACT_APP_API_URL })
+import api from '../api'; // axios.create({ baseURL: process.env.REACT_APP_API_URL })
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
@@ -11,11 +11,12 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // Sayfa ilk yüklendiğinde reviews’leri çek
+  // first load
   useEffect(() => {
     (async () => {
       try {
-        const res = await api.get('/reviews');
+        // baseURL zaten /api içeriyorsa, buraya sadece /feedback yazıyoruz
+        const res = await api.get('/feedback');
         setReviews(res.data || []);
       } catch {
         setError('Failed to load reviews.');
@@ -39,12 +40,22 @@ export default function Reviews({ currentUser }) {
     setSubmitting(true);
     try {
       const payload = {
-        username: currentUser.fullName, // backend reviews.username kolonu
+        username: currentUser.fullName, // backend “reviews.username” kolonu
         rating,
-        comment: comment.trim(),         // backend reviews.comment kolonu
+        comment: comment.trim(),        // backend “reviews.comment” kolonu
       };
-      const res = await api.post('/reviews', payload);
-      setReviews(prev => [res.data, ...prev]);
+      const res = await api.post('/feedback', payload);
+      // backend create response açıklaması:
+      // { id, full_name, rating, message, created_at }
+      // ama biz burada doğrudan r.username=r.full_name, r.comment=message diye çekiyoruz:
+      const created = {
+        id: res.data.id,
+        username: res.data.full_name,
+        rating: res.data.rating,
+        comment: res.data.message,
+        created_at: res.data.created_at
+      };
+      setReviews(prev => [created, ...prev]);
       setComment('');
       setRating(0);
       setHover(0);
@@ -65,13 +76,14 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966
-        a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.388
-        2.462a1 1 0 00-.364 1.118l1.286 3.966c.3.921-.755
-        1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176
-        0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286
-        -3.966a1 1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38
-        -1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.966z" />
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 
+        00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.388
+        2.462a1 1 0 00-.364 1.118l1.286 3.966c.3.921-.755 
+        1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 
+        0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286 
+        -3.966a1 1 0 00-.364-1.118L2.047 9.393c-.783
+        -.57-.38-1.81.588-1.81h4.178a1 1 0 00.95
+        -.69l1.286-3.966z" />
     </svg>
   );
 
@@ -110,9 +122,7 @@ export default function Reviews({ currentUser }) {
           </button>
         </form>
       ) : (
-        <p className="text-center text-gray-600 mb-8">
-          Please log in to leave a review.
-        </p>
+        <p className="text-center text-gray-600 mb-8">Please log in to leave a review.</p>
       )}
 
       <div ref={listRef} className="space-y-6 max-h-[400px] overflow-y-auto">
