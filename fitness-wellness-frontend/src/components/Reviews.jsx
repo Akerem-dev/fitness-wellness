@@ -4,86 +4,67 @@ import api from "../api";
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
-  const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [error, setError] = useState(null);
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
-  // reviewsları çekmek için fonksiyon
+  // 1) Feedback listesini çek
   const fetchReviews = async () => {
     try {
-      const res = await api.get("/api/feedback");
-      setReviews(res.data);
+      const { data } = await api.get("/api/feedback");
+      setReviews(data);
     } catch (err) {
-      console.error(err);
-      setError("Yorumlar yüklenirken bir hata oluştu.");
+      console.error("Fetch error:", err);
+      setError("Yorumlar yüklenemedi.");
     }
   };
 
-  // sayfa açılınca yorumları yükle
   useEffect(() => {
     fetchReviews();
   }, []);
 
+  // 2) Form gönderme
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    setError("");
 
     if (!currentUser) {
       setError("Yorum bırakmak için giriş yapmalısınız.");
       return;
     }
     if (!rating || !comment.trim()) {
-      setError("Hem puan hem de yorum gerekiyor.");
+      setError("Hem puan hem de yorum gerekli.");
       return;
     }
 
+    // backend’in feedbacks tablosu: (user_id, message, rating)
+    const payload = {
+      user_id: currentUser.id,               // <-- currentUser objenizdeki ID alanını kontrol edin
+      message: comment.trim(),
+      rating: Number(rating),
+    };
+    console.log("Submitting payload:", payload);
+
     setSubmitting(true);
     try {
-      // backend tablo yapısına uygun payload
-      await api.post("/api/feedback", {
-        user_id: currentUser.id,
-        rating,
-        message: comment.trim(),
-      });
-      // formu temizle ve yeniden çek
+      const res = await api.post("/api/feedback", payload);
+      // eğer API yeni kaydı dönüyorsa:
+      setReviews((prev) => [res.data, ...prev]);
       setComment("");
       setRating(0);
       setHover(0);
-      await fetchReviews();
-      // en üstteki yeni yoruma scroll
       listRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
-      console.error(err);
-      setError("Yorum gönderilemedi.");
+      console.error("Submit error:", err.response?.data || err);
+      // backend’in döndürdüğü hata mesajını da gösterebilirsiniz:
+      setError(err.response?.data?.error || "Yorum gönderilemedi.");
     } finally {
       setSubmitting(false);
     }
   };
-
-  const Star = ({ filled, ...props }) => (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill={filled ? "currentColor" : "none"}
-      stroke="currentColor"
-      strokeWidth={1}
-    >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 
-        00.95.69h4.178c.969 0 1.371 1.24.588 
-        1.81l-3.388 2.462a1 1 0 00-.364 
-        1.118l1.286 3.966c.3.921-.755 
-        1.688-1.538 1.118l-3.388-2.462a1 1 0 
-        00-1.176 0l-3.388 2.462c-.783.57-1.838-
-        .197-1.538-1.118l1.286-3.966a1 
-        1 0 00-.364-1.118L2.047 9.393c-
-        .783-.57-.38-1.81.588-1.81h4.178a1 
-        1 0 00.95-.69l1.286-3.966z" />
-    </svg>
-  );
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow mb-16">
@@ -93,16 +74,19 @@ export default function Reviews({ currentUser }) {
 
       {currentUser ? (
         <form onSubmit={handleSubmit} className="mb-8 space-y-4">
-          <div className="flex space-x-1">
+          {/* Yıldız seçimi: ★=doluyıldız ☆=boşyıldız */}
+          <div className="flex space-x-1 text-2xl">
             {[1, 2, 3, 4, 5].map((n) => (
-              <Star
+              <span
                 key={n}
-                filled={(hover || rating) >= n}
                 onMouseEnter={() => setHover(n)}
                 onMouseLeave={() => setHover(0)}
                 onClick={() => setRating(n)}
-                className="w-6 h-6 cursor-pointer text-yellow-400"
-              />
+                className={`cursor-pointer ${(hover || rating) >= n ? "text-yellow-400" : "text-gray-300"
+                  }`}
+              >
+                ★
+              </span>
             ))}
           </div>
           <textarea
@@ -134,12 +118,13 @@ export default function Reviews({ currentUser }) {
               <span className="font-semibold mr-2">{r.full_name}</span>
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <Star
+                  <span
                     key={i}
-                    filled={r.rating >= i}
                     className={`w-5 h-5 mr-1 ${r.rating >= i ? "text-yellow-400" : "text-gray-300"
                       }`}
-                  />
+                  >
+                    ★
+                  </span>
                 ))}
               </div>
             </div>
