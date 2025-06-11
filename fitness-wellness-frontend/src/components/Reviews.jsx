@@ -1,6 +1,6 @@
 // src/components/Reviews.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import api from '../api';
+import api from '../api';  // axios.create({ baseURL: process.env.REACT_APP_API_URL + '/api' })
 
 export default function Reviews({ currentUser }) {
   const [reviews, setReviews] = useState([]);
@@ -11,6 +11,7 @@ export default function Reviews({ currentUser }) {
   const [submitting, setSubmitting] = useState(false);
   const listRef = useRef(null);
 
+  // sayfa ilk render’ında yükle
   useEffect(() => {
     (async () => {
       try {
@@ -43,6 +44,7 @@ export default function Reviews({ currentUser }) {
         comment: comment.trim(),
       };
       const res = await api.post('/feedback', payload);
+      // en yeni yorumu en üste ekle
       setReviews(prev => [res.data, ...prev]);
       setComment('');
       setRating(0);
@@ -64,24 +66,35 @@ export default function Reviews({ currentUser }) {
       stroke="currentColor"
       strokeWidth={1}
     >
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286 3.966c.3.921-.755 1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.966a1 1 0 00-.364-1.118L2.047 9.393c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.966z" />
+      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 
+        1 0 00.95.69h4.178c.969 0 1.371 1.24.588 
+        1.81l-3.388 2.462a1 1 0 00-.364 
+        1.118l1.286 3.966c.3.921-.755 
+        1.688-1.538 1.118l-3.388-2.462a1 1 0 
+        00-1.176 0l-3.388 2.462c-.783.57-1.838-
+        .197-1.538-1.118l1.286-3.966a1 1 0 
+        00-.364-1.118L2.047 9.393c-.783-.57-
+        .38-1.81.588-1.81h4.178a1 1 0 
+        00.95-.69l1.286-3.966z" />
     </svg>
   );
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mb-16">
-      <h2 className="text-3xl font-bold text-green-600 text-center mb-4">Reviews</h2>
+      <h2 className="text-3xl font-bold text-green-600 text-center mb-4">
+        Reviews
+      </h2>
 
       {currentUser ? (
         <form onSubmit={handleSubmit} className="mb-8 space-y-4">
           <div className="flex space-x-1">
-            {[1, 2, 3, 4, 5].map(n => (
+            {[1,2,3,4,5].map(n => (
               <StarIcon
                 key={n}
-                filled={(hover || rating) >= n}
-                onMouseEnter={() => setHover(n)}
-                onMouseLeave={() => setHover(0)}
-                onClick={() => setRating(n)}
+                filled={(hover||rating)>=n}
+                onMouseEnter={()=>setHover(n)}
+                onMouseLeave={()=>setHover(0)}
+                onClick={()=>setRating(n)}
                 className="w-6 h-6 cursor-pointer text-yellow-400"
               />
             ))}
@@ -89,7 +102,7 @@ export default function Reviews({ currentUser }) {
           <textarea
             rows={3}
             value={comment}
-            onChange={e => setComment(e.target.value)}
+            onChange={e=>setComment(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Write your review…"
           />
@@ -109,16 +122,18 @@ export default function Reviews({ currentUser }) {
       )}
 
       <div ref={listRef} className="space-y-6 max-h-[400px] overflow-y-auto">
-        {reviews.map(r => (
+        {reviews.map(r=>(
           <div key={r.id} className="border-b pb-4">
             <div className="flex items-center mb-1">
               <span className="font-semibold mr-2">{r.username}</span>
               <span className="flex">
-                {[1, 2, 3, 4, 5].map(i => (
+                {[1,2,3,4,5].map(i=>(
                   <StarIcon
                     key={i}
-                    filled={r.rating >= i}
-                    className={`w-5 h-5 mr-1 ${r.rating >= i ? 'text-yellow-400' : 'text-gray-300'}`}
+                    filled={r.rating>=i}
+                    className={`w-5 h-5 mr-1 ${
+                      r.rating>=i ? 'text-yellow-400' : 'text-gray-300'
+                    }`}
                   />
                 ))}
               </span>
